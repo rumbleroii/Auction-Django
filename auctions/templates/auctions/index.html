@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+Auctions
+{% endblock %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+{% for Product in auction_list %}
+    <div class="d-flex flex-column mt-3 mb-3 border">
+        <div class='p-4'>
+          <div class="pt-4 pb-4 pl-3 pr-3">
+            <div class="row">
+              <div class="col-md-4" id='picture'><img src= "{{ Product.image.url }}" class="img-thumbnail" style="width: 400px; height: 250px;"></div>
+              <div class="col-6 col-md-4" id='details'>
+                <ul class='details_list'>
+                  <li class='title'><h2><a href="{% url 'listing' Product.pk %}">{{ Product.title }}</a></h2></li>
+                  <li class='description'>{{ Product.description }}</li>
+                  <li class='price'>Price: {{ Product.price }}$</li>
+                  <li class='date'>{{Product.date_posted }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock %}

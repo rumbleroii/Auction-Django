@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+Auctions
+{% endblock %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <br>
+
+{% for Product in watchlist %}
+    <ul>
+        <li><a href="{% url 'listing' Product.watchlist.pk %}">{{Product.watchlist.title}}</a></li>
+    </ul>
+{% endfor %}
+
+{% endblock %}

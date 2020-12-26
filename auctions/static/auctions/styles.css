@@ -1,0 +1,25 @@
+body {
+    padding: 10px;
+}
+
+.details_list {
+    list-style-type: none;
+
+}
+
+.details_list  li {
+    padding: 15px;
+
+}
+
+.date {
+    color: gray;
+    font-size: x-small;
+    
+}
+
+#picture {
+    width: 250px;
+    height: 250px;
+
+}

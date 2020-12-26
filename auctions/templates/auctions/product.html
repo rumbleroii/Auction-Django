@@ -1,0 +1,87 @@
+{% extends "auctions/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Listing: {{ Product.title }}
+{% endblock %}
+
+{% block body %}
+    <h2>Item Listed: {{ Product.title }} </h2>
+
+    {% if watchlist %}
+    <h6><span class="badge badge-secondary">Watchlisted</span></h6>
+    
+    {% else %}
+    <h6><a href = '{% url "watchlist_add" Product.pk %}'>Add Item To Watchlist</a></h6>
+    {% endif %}
+
+<img src = '{{ Product.image.url }}' style='width: 400px; height: 250px;'>
+
+<hr>
+<h5>{{ Product.title }}</h5>
+<br>
+<h3>Starting Price: {{ Product.price }}$</h3>
+<br>
+<h1>Current Bid: <bold>{{ highest_bid.bid }}$</bold></h1>
+<br>
+
+{% if Product.author == request.user %}
+    <p>Lister of this product cannot bid</p>
+{% else %}
+    <h3>Place Your Bid</h3>
+    <small>{{ bid_count }} Bid(s). {% if highest_bid %}{{ highest_bid.author.username }} is the highest bidder {% else %}{% endif %}</small>
+    <form action="bid/" method = 'post'>
+        {% csrf_token %}
+        {{ form_bid|crispy }}
+        <br>
+        <input type="submit" value="Place Bid" class='btn btn-primary'>
+        <input type='hidden' value="{{ Product.pk }}" , name = 'pk'>
+    </form>
+{% endif %}
+
+
+
+
+
+<h1>Details</h1>
+<ul>
+    <li>Listed by: {{ Product.author.username }} </li>
+
+    {% if Product.category == False %}
+    <li>Category: Not Listed</li>
+
+    {% else %}
+    <li>Category: <a href = "{% url 'index' Product.category %}">{{ Product.category }}</a></li>
+    {% endif %}
+</ul>
+
+{% if Product.author == request.user %}
+    <p>Lister of this product cannot comment</p>
+{% else %}
+    <div>
+        <div class='border pb-3 mb-3'>
+            <h1>Comment</h1>
+            <form method = 'post'>
+                {% csrf_token %}
+                {{ form_comment|crispy }}
+                <br>
+                <input type="submit" value="Comment" class='btn btn-primary'>
+            </form>
+        </div?>
+
+            {% for comment in Comments %}
+        <div class="d-flex flex-column mt-3 mb-3 border">
+                <div class="row">
+                <div class="col-6 col-md-4" id='details'>
+                    <ul class='details_list'>
+                        <li class='title'><h2>{{ comment.user.username }}</h2></li>
+                        <li class='description'>{{ comment.comment }}</li>
+                        <li class='date'>{{ comment.date_posted }}</li>
+                    </ul>
+                </div>
+                </div>
+        </div>
+            {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
